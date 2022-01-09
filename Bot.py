@@ -1,8 +1,7 @@
 import telebot
+
 import config
 import logick_01
-from telebot import types
-
 
 bot = telebot.TeleBot(config.TOKEN)
 
@@ -12,10 +11,9 @@ def welcome(message):
     bot.send_sticker(message.chat.id, config.opening_sticker_id)
 
     # keyboard
-    markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    item1 = types.KeyboardButton("💵 Costs")
-    item2 = types.KeyboardButton("📋 Yields")
-
+    markup = telebot.types.ReplyKeyboardMarkup(resize_keyboard=True)
+    item1 = telebot.types.KeyboardButton("💵 Costs")
+    item2 = telebot.types.KeyboardButton("📋 Yields")
     markup.add(item1, item2)
 
     bot.send_message(message.chat.id,
@@ -34,11 +32,31 @@ def refreshed_parse(message):
             bot.send_message(message.chat.id, 'Вот пожалуйста!')
         elif message.text == '📋 Yields':
             bot.send_message(message.chat.id, 'Момент, сейчас пришлю!')
-            with open(logick_01.csv_yeilds(), "rb") as file:
+            with open(logick_01.csv_yields(), "rb") as file:
                 bot.send_document(message.chat.id, file)
             bot.send_message(message.chat.id, 'Вот пожалуйста!')
         else:
             bot.send_message(message.chat.id, 'Is it сложно to просто use buttons которые тебе дали?')
+
+
+@bot.message_handler(content_types=['document'])
+def handle_docs(message):
+    bot.send_message(message.chat.id, 'Файл? Сейчас поглядим!')
+    try:
+        file_info = bot.get_file(message.document.file_id)
+        downloaded_file = bot.download_file(file_info.file_path)
+        src = 'received - ' + message.document.file_name
+        with open(src, 'wb') as new_file:
+            new_file.write(downloaded_file)
+        bot.send_message(message.chat.id, 'Скачал!')
+    except Exception as e:
+        bot.reply_to(message, str(e))
+
+
+
+@bot.message_handler(content_types=['voice'])
+def handle_voice(message):
+    bot.send_message(message.chat.id, 'Я не умею слушать голосовые... пока что')
 
 
 # RUN

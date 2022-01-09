@@ -2,7 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 
 
-#  tablitsi_dozodnosti_liniy_icn
+# The parsing of "tablitsi_dozodnosti_liniy_icn" link. Returns list of lists, each including one row of initial table
 def tables_parse():
     table_dozodnosti_liniy_content = []
     page = requests.get("https://usicn.com/ru/tablitsi_dozodnosti_liniy_icn/")
@@ -22,7 +22,7 @@ def tables_parse():
     return table_dozodnosti_liniy_content
 
 
-# linii_icn_grafiki_i_tseni
+# The parsing of "linii_icn_grafiki_i_tseni" link. Returns list of lists, each including one row of initial table
 def costs_parse():
     table_grafiki_i_tseni_content = []
     page = requests.get("https://usicn.com/ru/linii_icn_grafiki_i_tseni/")

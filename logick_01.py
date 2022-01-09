@@ -1,9 +1,11 @@
 import csv
-import Parcer
 from datetime import datetime
 
+import Parcer
+
+
 # Exclusive creation of Yields_YYYY-MM-DD.csv returns name of a file on current date
-def csv_yeilds():
+def csv_yields():
     file_name = 'Yields_{0}.csv'.format(str(datetime.date(datetime.today())))
     try:
         with open(file_name, "x", newline="") as file:
@@ -12,6 +14,7 @@ def csv_yeilds():
         return file_name
     except FileExistsError:
         return file_name
+
 
 # Exclusive creation of Costs_YYYY-MM-DD.csv returns name of a file on current date
 def csv_costs():
